@@ -25,6 +25,7 @@ mod led_controller;
 //
 //
 
+use self::rainbow::*;
 use self::or_state::*;
 use self::update_led::*;
 use self::json_socket::*;
@@ -46,6 +47,10 @@ fn main() {
 
     // Create a socket to receive JSON data
     let socket      = create_json_unix_socket("./test.socket", &handle);
+
+    // Show a rainbow startup sequence
+    let rainbow     = rainbow();
+    let socket      = socket.select(rainbow);
 
     // Supply a 'null' value initially to reset the LED
     let socket      = stream::iter_ok(vec![Value::Null].into_iter()).chain(socket);
