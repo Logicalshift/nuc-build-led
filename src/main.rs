@@ -24,9 +24,11 @@ mod led_controller;
 //
 //
 
+use self::or_state::*;
 use self::update_led::*;
 use self::json_socket::*;
 use self::build_state::*;
+use self::color_state::*;
 use self::led_controller::*;
 
 use tokio_core::reactor;
@@ -47,8 +49,11 @@ fn main() {
     // Supply a 'null' value initially to reset the LED
     let socket      = stream::iter_ok(vec![Value::Null].into_iter()).chain(socket);
 
+    // Create the LED state function (build state first, color state second)
+    let led_state   = or_state(build_state, color_state);
+
     // Update the LED using the build state
-    let led_updates = led_controller(socket, build_state);
+    let led_updates = led_controller(socket, led_state);
 
     // Send to the LED
     let led_updates = update_led_state(led_updates);
