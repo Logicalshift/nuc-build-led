@@ -5,7 +5,8 @@ use std::fmt::Debug;
 
 ///
 /// Available colours for the LED
-/// 
+///
+#[allow(dead_code)]
 pub enum LedColor {
     Amber,
     Cyan,
@@ -21,6 +22,7 @@ pub enum LedColor {
 ///
 /// Possible fade/blink states for the LED
 /// 
+#[allow(dead_code)]
 pub enum LedFade {
     BlinkFast,
     BlinkMedium,
@@ -34,6 +36,7 @@ pub enum LedFade {
 ///
 /// Type of LED to set
 /// 
+#[allow(dead_code)]
 pub enum LedType {
     Ring,
     Power
