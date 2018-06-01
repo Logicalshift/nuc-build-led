@@ -46,7 +46,7 @@ fn main() {
     let handle      = tokio.handle();
 
     // Create a socket to receive JSON data
-    let socket      = create_json_unix_socket("./test.socket", &handle);
+    let socket      = create_json_unix_socket("/var/run/nuc-led/control", &handle);
 
     // Show a rainbow startup sequence
     let rainbow     = rainbow();
