@@ -13,6 +13,7 @@ extern crate tokio_core;
 // 
 //
 
+mod or_state;
 mod update_led;
 mod json_socket;
 mod build_state;
