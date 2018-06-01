@@ -1,5 +1,5 @@
 extern crate serde;
-extern crate serde_json;
+#[macro_use] extern crate serde_json;
 extern crate futures;
 extern crate tokio;
 extern crate tokio_uds;
@@ -12,6 +12,9 @@ use self::led_socket::*;
 
 use tokio_core::reactor;
 use futures::*;
+use std::io::Error;
+use futures::future;
+use serde_json::Value;
 
 fn main() {
     // Set up tokio
@@ -23,13 +26,15 @@ fn main() {
 
     // Test: just print some stuff when the socket receives data
     let write_data  = socket
+        .or_else(|err| -> future::Ok<Value, Error> {
+            // Display errors and pass on the empty value
+            println!("Error: {:?}", err);
+            future::ok(json![{}])
+        })
         .for_each(|json| {
             println!("{:?}", json);
 
             Ok(())
-        })
-        .map_err(|err| {
-            println!("Error: {:?}", err);
         });
 
     // Run our server
