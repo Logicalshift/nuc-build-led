@@ -6,7 +6,7 @@ extern crate tokio_uds;
 extern crate tokio_core;
 
 mod led;
-mod led_socket;
+mod led_controller;
 mod json_socket;
 
 use self::json_socket::*;
