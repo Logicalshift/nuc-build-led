@@ -39,6 +39,10 @@ use futures::future;
 use futures::stream;
 use serde_json::Value;
 use std::io::Error;
+use std::path::Path;
+use std::fs;
+
+const SOCKET_PATH: &str = "/var/run/nuc-led/control";
 
 fn main() {
     // Set up tokio
@@ -46,7 +50,10 @@ fn main() {
     let handle      = tokio.handle();
 
     // Create a socket to receive JSON data
-    let socket      = create_json_unix_socket("/var/run/nuc-led/control", &handle);
+    if Path::new(SOCKET_PATH).exists() {
+        fs::remove_file(SOCKET_PATH).unwrap();
+    }
+    let socket      = create_json_unix_socket(SOCKET_PATH, &handle);
 
     // Show a rainbow startup sequence
     let rainbow     = rainbow();
