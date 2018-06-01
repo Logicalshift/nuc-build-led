@@ -7,8 +7,9 @@ extern crate tokio_core;
 
 mod led;
 mod led_socket;
+mod json_socket;
 
-use self::led_socket::*;
+use self::json_socket::*;
 
 use tokio_core::reactor;
 use futures::*;
