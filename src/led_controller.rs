@@ -79,7 +79,10 @@ pub fn led_state_string(led: LedType, brightness: u32, fade: LedFade, color: Led
 ///
 /// Converts from JSON LED updates to a stream of updates for the NUC LED driver
 /// 
-pub fn led_controller<JsonError: Debug, JsonStream: Stream<Item=Value, Error=JsonError>, StateFn: FnMut(&Value) -> Option<(u32, LedFade, LedColor)>>(input: JsonStream, get_led_state: StateFn) -> impl Stream<Item=String, Error=JsonError> {
+pub fn led_controller<JsonError, JsonStream, StateFn>(input: JsonStream, get_led_state: StateFn) -> impl Stream<Item=String, Error=JsonError> 
+where   JsonError: Debug, 
+        JsonStream: Stream<Item=Value, Error=JsonError>,
+        StateFn: FnMut(&Value) -> Option<(u32, LedFade, LedColor)> {
     // Map will represent the current state of the controller
     let mut state           = Value::Object(Map::new());
     let mut get_led_state   = get_led_state;
