@@ -89,10 +89,10 @@ pub fn led_controller<JsonError: Debug, JsonStream: Stream<Item=Value, Error=Jso
         match next_value {
             // Merge object values into the existing state
             Value::Object(new_values) => {
-                state = if let Value::Object(existing_map) = state.take() {
+                state = if let Value::Object(mut existing_map) = state.take() {
                     // Merge in the values in new_values
                     for (key, value) in new_values {
-                        state[key.clone()] = value.clone();
+                        existing_map.insert(key.clone(), value.clone());
                     }
 
                     // Re-use the existing map to make the new state
