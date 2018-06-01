@@ -14,6 +14,7 @@ extern crate tokio_core;
 //
 
 mod led;
+mod update_led;
 mod json_socket;
 mod build_state;
 mod led_controller;
