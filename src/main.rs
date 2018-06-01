@@ -41,6 +41,7 @@ use serde_json::Value;
 use std::io::Error;
 use std::path::Path;
 use std::fs;
+use std::os::unix::fs::*;
 
 const SOCKET_PATH: &str = "/var/run/nuc-led/control";
 
@@ -55,6 +56,8 @@ fn main() {
     }
     let socket      = create_json_unix_socket(SOCKET_PATH, &handle);
 
+    fs::set_permissions(SOCKET_PATH, fs::Permissions::from_mode(0b111_111_000)).unwrap();
+    
     // Show a rainbow startup sequence
     let rainbow     = rainbow();
     let socket      = socket.select(rainbow);
