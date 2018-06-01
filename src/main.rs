@@ -13,7 +13,6 @@ extern crate tokio_core;
 // 
 //
 
-mod led;
 mod update_led;
 mod json_socket;
 mod build_state;
@@ -23,7 +22,10 @@ mod led_controller;
 //
 //
 
+use self::update_led::*;
 use self::json_socket::*;
+use self::build_state::*;
+use self::led_controller::*;
 
 use tokio_core::reactor;
 use futures::*;
@@ -38,11 +40,14 @@ fn main() {
     // Create a socket to receive JSON data
     let socket      = create_json_unix_socket("./test.socket", &handle);
 
-    // Test: just print some stuff when the socket receives data
-    let write_data  = socket
-        .map(|json| {
-            println!("{:?}", json);
-        })
+    // Update the LED using the build state
+    let led_updates = led_controller(socket, build_state);
+
+    // Send to the LED
+    let led_updates = update_led_state(led_updates);
+
+    // Main loop: just print errors and carry on
+    let write_data  = led_updates
         .or_else(|err| -> future::Ok<(), Error> {
             // Display errors and pass on the empty value
             println!("Error: {:?}", err);

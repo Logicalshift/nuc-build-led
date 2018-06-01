@@ -1,5 +1,4 @@
 use futures::*;
-use futures::future;
 use tokio::io;
 use tokio::fs::file::File;
 use std::io::Error;
@@ -11,7 +10,7 @@ const LED_PROC_FILE: &str = "/proc/acpi/nuc_led";
 /// Function that takes a stream of strings to set the LED state to and sends
 /// them to the NUC LED proc file
 /// 
-pub fn update_led_state<Input: Stream<Item=String, Error=Error>>(input: Input) -> impl Stream<Item=()> {
+pub fn update_led_state<Input: Stream<Item=String, Error=Error>>(input: Input) -> impl Stream<Item=(), Error=Error> {
     input.and_then(|led_string| {
         // Buffer the LED string for later writing
         let led_string_buf = led_string.into_bytes();
