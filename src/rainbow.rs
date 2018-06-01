@@ -7,10 +7,10 @@ use std::io::{Error, ErrorKind};
 use std::time::{Duration, Instant};
 
 /// Time between each colour
-const DELAY_MILLIS: u64 = 100;
+const DELAY_MILLIS: u64 = 150;
 
 /// Time to display the final colour
-const FINAL_DELAY: u64  = 250;
+const FINAL_DELAY: u64  = 700;
 
 ///
 /// Generates a sequence that cycles through the LED colours before turning off
