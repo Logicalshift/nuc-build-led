@@ -2,6 +2,7 @@
 name = "nuc-build-led"
 version = "0.1.0"
 authors = ["Andrew Hunter <andrew@logicalshift.co.uk>"]
+license = "MIT"
 
 [dependencies]
 tokio       = "0.1"
