@@ -5,7 +5,7 @@ use tokio_uds::*;
 use serde_json::Value;
 use tokio_core::reactor::Handle;
 
-use serde_json::*;
+use serde_json;
 use std::io::{Error, ErrorKind};
 
 ///
@@ -20,6 +20,7 @@ pub fn create_json_unix_socket(name: &str, handle: &Handle) -> impl Stream<Item=
         .and_then(|(stream, _socket_addr)| {
             io::read_to_end(stream, vec![])
                 .and_then(|(_stream, buf)| 
-                    future::result(from_reader(&*buf).map_err(|e| Error::new(ErrorKind::Other, e))))
+                    future::result(serde_json::from_reader(&*buf)
+                        .map_err(|e| Error::new(ErrorKind::Other, e))))
         })
 }
